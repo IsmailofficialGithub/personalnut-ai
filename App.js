@@ -1,20 +1,51 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { AuthProvider } from './src/contexts/AuthContext';
+import { ThemeProvider } from './src/contexts/ThemeContext';
+import { NotificationProvider } from './src/contexts/NotificationContext';
+import { RevenueCatProvider } from './src/contexts/RevenueCatContext';
+import { AppNavigator } from './src/navigation/AppNavigator';
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+  try {
+    return (
+      <ThemeProvider>
+        <AuthProvider>
+          <RevenueCatProvider>
+            <NotificationProvider>
+              <AppNavigator />
+            </NotificationProvider>
+          </RevenueCatProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    );
+  } catch (error) {
+    console.error('App initialization error:', error);
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorText}>App Error</Text>
+        <Text style={styles.errorDetails}>{error.message}</Text>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-  container: {
+  errorContainer: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    padding: 20,
+  },
+  errorText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#f00',
+    marginBottom: 10,
+  },
+  errorDetails: {
+    fontSize: 14,
+    color: '#666',
   },
 });

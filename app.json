@@ -1,29 +1,72 @@
 {
   "expo": {
-    "name": "personalnut-ai",
-    "slug": "personalnut-ai",
+    "name": "GRAM AI",
+    "slug": "gram-ai",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "newArchEnabled": true,
+    "icon": "./assets/signin-signup-logo.png",
+    "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/app-logo.jpg",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.personalnut.ai"
     },
     "android": {
+      "versionCode": 1,
+      "package": "com.personalnut.ai",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/signin-signup-logo.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.CAMERA",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.READ_MEDIA_VISUAL_USER_SELECTED",
+        "android.permission.ACCESS_MEDIA_LOCATION",
+        "android.permission.READ_MEDIA_IMAGES",
+        "android.permission.READ_MEDIA_VIDEO",
+        "android.permission.READ_MEDIA_AUDIO"
+      ]
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    }
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow GRAM AI to access your camera to capture food photos."
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow GRAM AI to access your photos.",
+          "savePhotosPermission": "Allow GRAM AI to save photos.",
+          "isAccessMediaLocationEnabled": true
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app needs access to your photo library to upload food images."
+        }
+      ]
+    ],
+    "extra": {
+      "SUPABASE_URL": "https://qcucqyorafkvmdrezhry.supabase.co",
+      "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFjdWNxeW9yYWZrdm1kcmV6aHJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM3MDk2NDQsImV4cCI6MjA3OTI4NTY0NH0.w7XtePSvzwxB57tczrhBFlUf2MgXXQx6aKT0uoufTXo",
+      "OPENAI_API_KEY": "YOUR_OPENAI_API_KEY",
+      "REVENUECAT_API_KEY": "sk_kiotmkdYmrVeTqbGEyjRYFSJogPPq",
+      "eas": {
+        "projectId": "1af759e5-c0a8-4de9-9101-d702a2f895f1"
+      }
+    },
   }
 }
