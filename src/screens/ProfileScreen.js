@@ -14,6 +14,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../contexts/ThemeContext';
+import { useRevenueCat } from '../contexts/RevenueCatContext';
 import { Card } from '../components/Card';
 import { Button } from '../components/Button';
 import { Input } from '../components/Input';
@@ -26,6 +27,7 @@ import { PageContainer } from '../components/PageContainer';
 export const ProfileScreen = ({ navigation }) => {
   const { user, profile, signOut, updateProfile, fetchProfile } = useAuth();
   const { colors, isDark, toggleTheme } = useTheme();
+  const { subscriptionTier, isPro } = useRevenueCat();
   const [editing, setEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [statsPeriod, setStatsPeriod] = useState('week'); // 'day', 'week', 'month', 'year'
@@ -34,7 +36,7 @@ export const ProfileScreen = ({ navigation }) => {
   // Use local asset for header image
   const headerImage = require('../../assets/header-1.png');
   const [showAvatarModal, setShowAvatarModal] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     full_name: profile?.full_name || '',
     age: profile?.age?.toString() || '',
@@ -54,7 +56,7 @@ export const ProfileScreen = ({ navigation }) => {
     try {
       const now = new Date();
       let startDate = new Date();
-      
+
       switch (statsPeriod) {
         case 'day':
           startDate.setDate(now.getDate() - 1);
@@ -263,7 +265,7 @@ export const ProfileScreen = ({ navigation }) => {
                     ))}
                   </View>
                 </View>
-                
+
                 {loadingStats ? (
                   <View style={styles.loadingStats}>
                     <ActivityIndicator size="small" color={colors.primary} />
@@ -330,7 +332,7 @@ export const ProfileScreen = ({ navigation }) => {
                     </View>
                   </View>
                 ) : null}
-                
+
                 <View style={styles.statsGrid}>
                   <View style={styles.statItem}>
                     <Ionicons name="fitness" size={24} color={colors.primary} />
@@ -396,8 +398,8 @@ export const ProfileScreen = ({ navigation }) => {
                     Activity Level
                   </Text>
                   <Text style={[styles.infoValue, { color: colors.text }]}>
-                    {profile?.activity_level?.replace('_', ' ').charAt(0).toUpperCase() + 
-                     profile?.activity_level?.slice(1).replace('_', ' ') || 'N/A'}
+                    {profile?.activity_level?.replace('_', ' ').charAt(0).toUpperCase() +
+                      profile?.activity_level?.slice(1).replace('_', ' ') || 'N/A'}
                   </Text>
                 </View>
                 <View style={styles.infoRow}>
@@ -443,6 +445,36 @@ export const ProfileScreen = ({ navigation }) => {
                     onValueChange={toggleTheme}
                     trackColor={{ false: colors.border, true: colors.primary }}
                     thumbColor="#FFFFFF"
+                  />
+                </View>
+              </Card>
+
+              <Card style={styles.subscriptionCard}>
+                <Text style={[styles.sectionTitle, { color: colors.text }]}>
+                  Subscription
+                </Text>
+                <View style={styles.subscriptionRow}>
+                  <View style={styles.subscriptionInfo}>
+                    <Ionicons
+                      name={isPro ? "star" : "star-outline"}
+                      size={24}
+                      color={isPro ? colors.primary : colors.text}
+                    />
+                    <View>
+                      <Text style={[styles.subscriptionLabel, { color: colors.text }]}>
+                        Current Plan
+                      </Text>
+                      <Text style={[styles.subscriptionValue, { color: colors.primary }]}>
+                        {subscriptionTier?.toUpperCase() || 'FREE'}
+                      </Text>
+                    </View>
+                  </View>
+                  <Button
+                    title={isPro ? "Manage" : "Upgrade"}
+                    variant={isPro ? "outline" : "primary"}
+                    size="small"
+                    onPress={() => navigation.navigate('Subscription')}
+                    style={styles.subscriptionButton}
                   />
                 </View>
               </Card>
@@ -533,7 +565,7 @@ export const ProfileScreen = ({ navigation }) => {
           )}
         </View>
       </ScrollView>
-      
+
       <AvatarSelectionModal
         visible={showAvatarModal}
         onClose={() => setShowAvatarModal(false)}
@@ -697,6 +729,30 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingVertical: Theme.spacing.sm,
+  },
+  subscriptionCard: {
+    marginBottom: Theme.spacing.md,
+  },
+  subscriptionRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  subscriptionInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Theme.spacing.md,
+  },
+  subscriptionLabel: {
+    fontSize: Theme.fontSize.sm,
+    fontWeight: Theme.fontWeight.normal,
+  },
+  subscriptionValue: {
+    fontSize: Theme.fontSize.lg,
+    fontWeight: Theme.fontWeight.bold,
+  },
+  subscriptionButton: {
+    minWidth: 100,
   },
   settingInfo: {
     flexDirection: 'row',

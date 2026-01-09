@@ -1,16 +1,16 @@
-import Purchases from 'react-native-purchases';
+import Purchases, { LOG_LEVEL } from 'react-native-purchases';
 import { Platform } from 'react-native';
 import Constants from 'expo-constants';
 
-// Get RevenueCat API Key from environment variables
+// Platform-specific test API keys
+const iosApiKey = 'test_qeEWoUCdYdeMEPcVmmzvEMMiYxo';
+const androidApiKey = 'test_qeEWoUCdYdeMEPcVmmzvEMMiYxo';
+
+// Fallback to environment variables if needed (for production)
 const REVENUECAT_API_KEY = 
   Constants.expoConfig?.extra?.REVENUECAT_API_KEY || 
   Constants.manifest?.extra?.REVENUECAT_API_KEY || 
   '';
-
-if (!REVENUECAT_API_KEY) {
-  console.error('REVENUECAT_API_KEY not found. Please check your app.config.js and .env file.');
-}
 
 // Subscription Tiers
 export const SUBSCRIPTION_TIERS = {
@@ -37,18 +37,15 @@ export const PRODUCT_IDS = {
  */
 export const initializeRevenueCat = async (userId) => {
   try {
-    // Check if API key is available
-    if (!REVENUECAT_API_KEY || REVENUECAT_API_KEY.trim() === '') {
-      console.warn('RevenueCat API key is not configured. Subscription features will be disabled.');
-      return { success: false, error: 'API key not configured' };
-    }
+    // Set verbose logging
+    Purchases.setLogLevel(LOG_LEVEL.VERBOSE);
 
-    // Configure SDK based on platform
+    // Configure SDK based on platform with test API keys
     try {
       if (Platform.OS === 'ios') {
-        await Purchases.configure({ apiKey: REVENUECAT_API_KEY });
+        await Purchases.configure({ apiKey: iosApiKey });
       } else if (Platform.OS === 'android') {
-        await Purchases.configure({ apiKey: REVENUECAT_API_KEY });
+        await Purchases.configure({ apiKey: androidApiKey });
       } else {
         // Web or other platforms
         console.warn('RevenueCat is not supported on this platform');

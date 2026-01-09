@@ -747,6 +747,3 @@ This is a private project. For issues or questions, please contact the developme
 ---
 
 **Made with ❤️ for better nutrition tracking**
-
-#   p e r s o n a l n u t - a i  
- 
