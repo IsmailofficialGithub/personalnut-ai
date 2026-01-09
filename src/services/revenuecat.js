@@ -41,6 +41,9 @@ export const initializeRevenueCat = async (userId) => {
     Purchases.setLogLevel(LOG_LEVEL.VERBOSE);
 
     // Configure SDK based on platform with test API keys
+    // Note: In Expo Go, you may see a non-fatal error: "Cannot read property 'search' of undefined"
+    // This occurs in RevenueCat's internal analytics tracking and can be safely ignored.
+    // The SDK will still initialize and function correctly. This is a known Expo Go limitation.
     try {
       if (Platform.OS === 'ios') {
         await Purchases.configure({ apiKey: iosApiKey });
